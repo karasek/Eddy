@@ -6,6 +6,7 @@ import com.eddy.ccnodes.AssignmentCCNode;
 import com.eddy.ccnodes.CloudCCNode;
 import com.eddy.ccnodes.FieldCCNode;
 import com.eddy.cloud.*;
+import com.eddy.level.*;
 import org.cocos2d.actions.UpdateCallback;
 import org.cocos2d.events.CCTouchDispatcher;
 import org.cocos2d.layers.CCColorLayer;
@@ -27,7 +28,7 @@ public class GameLayer extends CCColorLayer {
     ArrayList<AssignmentCCNode> _assignmentNodes = new ArrayList<AssignmentCCNode>();
 
     DragInfo _dragInfo = new DragInfo();
-    Assignment _assignment;
+    ILevel _currentLevel;
 
     String[] _pictures = new String[]{"s1_bike.png", "s1_heart.png", "s1_leaf.png",
             "s1_smile.png", "s1_sun.png"};
@@ -37,7 +38,7 @@ public class GameLayer extends CCColorLayer {
 
     protected GameLayer(ccColor4B color, Bundle savedInstanceState) {
         super(color);
-        _assignment = createAssignment(savedInstanceState);
+        _currentLevel = createCurrentLevel(savedInstanceState);
         _layout = new GameLayout(CCDirector.sharedDirector().displaySize());
         refillClouds(savedInstanceState);
         refillFields();
@@ -52,7 +53,7 @@ public class GameLayer extends CCColorLayer {
     }
 
     public void saveState(Bundle state) {
-        _assignment.saveState(state);
+        _currentLevel.saveState(state);
         Bundle b = new Bundle();
         for (int i = 0; i < _cloudPlacement.size(); i++) {
             _cloudPlacement.get(i).saveState(b);
@@ -61,17 +62,12 @@ public class GameLayer extends CCColorLayer {
         state.putBundle("cloudPlacement", b);
     }
 
-    private Assignment createAssignment(Bundle state) {
-        if (state == null || state == Bundle.EMPTY)
-            return Assignment.generate(SQUARE_COUNT, 0, createBehaviours(), _pictures.length);
-        return new Assignment(state);
-    }
-
-    static ICloudLogic[] createBehaviours() {
-        ICloudLogic[] cl = new ICloudLogic[]{new CloudOne(), new CloudBar(), new CloudDiagonal(), new CloudThree()};
-        for (int i = 0; i < cl.length; i++)
-            cl[i].setId(Integer.toString(i));
-        return cl;
+    private ILevel createCurrentLevel(Bundle state) {
+        if (state != null)
+            return new Level(state);
+        ILevelCreator levelCreator = new FirstLevelCreator();
+        LevelConfiguration lc = levelCreator.createConfiguration();
+        return new Level(lc, levelCreator.createAssignment(lc));
     }
 
     void refillClouds(Bundle savedInstanceState) {
@@ -84,7 +80,7 @@ public class GameLayer extends CCColorLayer {
         Bundle placement = null;
         if (savedInstanceState != null && savedInstanceState.containsKey("cloudPlacement"))
             placement = savedInstanceState.getBundle("cloudPlacement");
-        for (ICloudLogic logic : createBehaviours()) {
+        for (ICloudLogic logic : _currentLevel.getConfiguration().getCloudLogic()) {
             CloudPlacement place;
             if (placement != null) {
                 place = new CloudPlacement(logic.getId(), placement);
@@ -109,7 +105,7 @@ public class GameLayer extends CCColorLayer {
         _fields.clear();
         float fieldSize = _layout.getFieldSize();
         for (int i = 0; i < SQUARE_COUNT; i++) {
-            FieldCCNode f = new FieldCCNode(fieldSize, _assignment.getPlacement(i), _pictures);
+            FieldCCNode f = new FieldCCNode(fieldSize, _currentLevel.getAssignment().getPlacement(i), _pictures);
             f.setPosition(_layout.getFieldOrigin(i));
             _fields.add(f);
             addChild(f, Z_ORDER_FIELDS);
@@ -122,7 +118,7 @@ public class GameLayer extends CCColorLayer {
         }
         _assignmentNodes.clear();
         float assignmentSize = _layout.getAssignmentSize();
-        ArrayList<Integer> reqPictures = _assignment.getRequiredPictures();
+        ArrayList<Integer> reqPictures = _currentLevel.getAssignment().getRequiredPictures();
         for (int i = 0; i < reqPictures.size(); i++) {
             AssignmentCCNode n = new AssignmentCCNode(assignmentSize, _pictures[reqPictures.get(i)]);
             n.setPosition(_layout.getAssignmentOrigin(i));

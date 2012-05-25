@@ -24,6 +24,7 @@
         <option name="RUN_PROGUARD" value="false" />
         <option name="PROGUARD_CFG_PATH" value="/proguard.cfg" />
         <resOverlayFolders />
+        <includeSystemProguardFile>false</includeSystemProguardFile>
       </configuration>
     </facet>
   </component>
@@ -33,6 +34,15 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/gen" isTestSource="false" />
     </content>
+    <orderEntry type="module-library" exported="">
+      <library>
+        <CLASSES>
+          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit-4.10.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="jdk" jdkName="Android 2.2 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="cocos2d-android" level="project" />

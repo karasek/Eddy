@@ -1,6 +1,5 @@
 package com.eddy.level;
 
-import com.eddy.PicturePlacement;
 import com.eddy.cloud.ICloudLogic;
 import com.eddy.exceptions.InvalidArgumentException;
 
@@ -10,13 +9,14 @@ public class AssignmentBuilder {
     private int usePictureCount;
     private Boolean canRotate;
     private int canPermute;
+    private int emptyCount;
 
     public AssignmentBuilder(LevelConfiguration configuration) {
         this.configuration = configuration;
     }
 
     public Assignment build() {
-        Assignment assignment = new Assignment(configuration.getSquareCount(), configuration.getPictureCount());
+        Assignment assignment = new Assignment(configuration.getSquareCount(), configuration.getPictureCount(), emptyCount);
         ICloudLogic[] cloudLogic = clone(configuration.getCloudLogic());
         permuteArray(cloudLogic, canPermute);
         if (canRotate)
@@ -50,6 +50,11 @@ public class AssignmentBuilder {
 
     public AssignmentBuilder canPermute(int canPermute) {
         this.canPermute = canPermute;
+        return this;
+    }
+
+    public AssignmentBuilder emptyCount(int emptyCount) {
+        this.emptyCount = emptyCount;
         return this;
     }
 

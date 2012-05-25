@@ -2,7 +2,7 @@ package com.eddy.ccnodes;
 
 import com.eddy.GameLayer;
 import com.eddy.GameLayout;
-import com.eddy.PicturePlacement;
+import com.eddy.level.PicturePlacement;
 import org.cocos2d.nodes.CCNode;
 import org.cocos2d.nodes.CCSprite;
 import org.cocos2d.opengl.CCDrawingPrimitives;
@@ -22,7 +22,10 @@ public class FieldCCNode extends CCNode {
         CGPoint[] origins = GameLayout.quarterRectReturnOriginPoints(CGPoint.ccp(0,0), fieldSize);
         assert origins.length == placement.getCount();
         for (int i = 0; i < placement.getCount(); i++) {
-            CCSprite s = CCSprite.sprite(pictures[placement.getPictureId(i)]);
+            int pictureId = placement.getPictureId(i);
+            if (pictureId==PicturePlacement.EMPTY_PICTURE)
+                continue;
+            CCSprite s = CCSprite.sprite(pictures[pictureId]);
             CGSize picSize = s.getContentSize();
             s.setScaleX(subSpriteSize.width / picSize.width);
             s.setScaleY(subSpriteSize.height / picSize.height);

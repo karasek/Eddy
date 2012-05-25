@@ -1,6 +1,7 @@
 package com.eddy.cloud;
 
 import android.graphics.Rect;
+import com.eddy.level.LevelConfiguration;
 
 public abstract class CloudBase implements ICloudLogic {
     boolean _inDepot;
@@ -76,7 +77,7 @@ public abstract class CloudBase implements ICloudLogic {
 
     @Override
     public int getCount() {
-        return 4;
+        return LevelConfiguration.SQUARE_COUNT;
     }
 
 }

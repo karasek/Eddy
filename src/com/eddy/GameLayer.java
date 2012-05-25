@@ -19,7 +19,6 @@ import java.util.ArrayList;
 
 public class GameLayer extends CCColorLayer {
 
-    public static final int SQUARE_COUNT = 4;
     public static final int Z_ORDER_FIELDS = 1;
     public static final int Z_ORDER_CLOUDS = 2;
     ArrayList<CloudCCNode> _clouds = new ArrayList<CloudCCNode>();
@@ -104,7 +103,7 @@ public class GameLayer extends CCColorLayer {
         }
         _fields.clear();
         float fieldSize = _layout.getFieldSize();
-        for (int i = 0; i < SQUARE_COUNT; i++) {
+        for (int i = 0; i < LevelConfiguration.SQUARE_COUNT; i++) {
             FieldCCNode f = new FieldCCNode(fieldSize, _currentLevel.getAssignment().getPlacement(i), _pictures);
             f.setPosition(_layout.getFieldOrigin(i));
             _fields.add(f);
@@ -119,9 +118,12 @@ public class GameLayer extends CCColorLayer {
         _assignmentNodes.clear();
         float assignmentSize = _layout.getAssignmentSize();
         ArrayList<Integer> reqPictures = _currentLevel.getAssignment().getRequiredPictures();
+        int realCount=0;
         for (int i = 0; i < reqPictures.size(); i++) {
+            int pictureIdx = reqPictures.get(i);
+            if (pictureIdx == PicturePlacement.EMPTY_PICTURE) continue;
             AssignmentCCNode n = new AssignmentCCNode(assignmentSize, _pictures[reqPictures.get(i)]);
-            n.setPosition(_layout.getAssignmentOrigin(i));
+            n.setPosition(_layout.getAssignmentOrigin(realCount++));
             _assignmentNodes.add(n);
             addChild(n, Z_ORDER_FIELDS);
         }
@@ -184,7 +186,7 @@ public class GameLayer extends CCColorLayer {
     }
 
     private void throwPreviousCloud(int position, int newCloudId) {
-        for (int i = 0; i < SQUARE_COUNT; i++) {
+        for (int i = 0; i < LevelConfiguration.SQUARE_COUNT; i++) {
             if (i == newCloudId) continue;
             CloudPlacement cp = _cloudPlacement.get(i);
             if (!cp.getIsInDock() && cp.getPosition() == position) {
@@ -198,7 +200,7 @@ public class GameLayer extends CCColorLayer {
 
     private CloudPlacement findEmptyDropPlace(CGPoint position) {
         CloudPlacement cp = new CloudPlacement("temp", false, 0);
-        for (int i = 0; i < SQUARE_COUNT; i++) {
+        for (int i = 0; i < LevelConfiguration.SQUARE_COUNT; i++) {
             cp.setPosition(i);
             if (_layout.contains(cp, position)) {
                 return cp;

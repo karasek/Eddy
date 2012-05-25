@@ -5,19 +5,20 @@ import com.eddy.cloud.ICloudLogic;
 import com.eddy.exceptions.InvalidArgumentException;
 
 public class LevelConfiguration {
+    public static final int SQUARE_COUNT = 4;
     int squareCount;
     ICloudLogic[] cloudLogic;
     int pictureCount;
 
     public LevelConfiguration(ICloudLogic[] cloudLogic, int pictureCount) {
-        this.squareCount = 4;
+        this.squareCount = SQUARE_COUNT;
         this.cloudLogic = cloudLogic;
         this.pictureCount = pictureCount;
         markCloudLogic();
     }
 
     public LevelConfiguration(Bundle bundle) {
-        this.squareCount = 4;
+        this.squareCount = SQUARE_COUNT;
         this.pictureCount = bundle.getInt("pictureCount");
         String[] cloudLogicNames = bundle.getStringArray("cloudLogic");
         cloudLogic = new ICloudLogic[cloudLogic.length];

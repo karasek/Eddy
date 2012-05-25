@@ -1,21 +1,24 @@
 package com.eddy.level;
 
 import android.os.Bundle;
-import com.eddy.PicturePlacement;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Assignment {
     int _squareCount;
     PicturePlacement[] _placements;
     ArrayList<Integer> _requiredContent;
 
-    Assignment(int squareCount, int pictureCount) {
+    Assignment(int squareCount, int pictureCount, int emptyCount) {
         _squareCount = squareCount;
-        _placements = new PicturePlacement[_squareCount];
-        for (int i = 0; i < _squareCount; i++)
-            _placements[i] = new PicturePlacement(pictureCount);
         _requiredContent = new ArrayList<Integer>();
+
+        _placements = new PicturePlacement[_squareCount];
+        EmptyFieldSpread efs = new EmptyFieldSpread(_squareCount * LevelConfiguration.SQUARE_COUNT, emptyCount);
+        Iterator<Boolean> isEmptyIterator = efs.iterator();
+        for (int i = 0; i < _squareCount; i++)
+            _placements[i] = new PicturePlacement(pictureCount, isEmptyIterator);
     }
 
     public Assignment(Bundle savedState) {

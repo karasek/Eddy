@@ -6,6 +6,7 @@ import com.eddy.cloud.CloudPlacement;
 import com.eddy.GameLayer;
 import com.eddy.GameLayout;
 import com.eddy.cloud.ICloudLogic;
+import com.eddy.level.LevelConfiguration;
 import org.cocos2d.actions.instant.CCCallFunc;
 import org.cocos2d.actions.interval.CCMoveTo;
 import org.cocos2d.actions.interval.CCRotateBy;
@@ -46,7 +47,7 @@ public class CloudCCNode extends CCNode {
         float scaleX = _contentSize.width / spriteSize.width;
         float scaleY = _contentSize.height / spriteSize.height;
         Rect rect = new Rect(0, 0, (int) _contentSize.width, (int) _contentSize.height);
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < LevelConfiguration.SQUARE_COUNT; i++) {
             if (!_logic.isCoveredIgnoreRotation(i))
                 continue;
             Rect subRect = _logic.getSubRect(rect, i);

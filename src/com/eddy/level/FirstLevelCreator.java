@@ -9,7 +9,7 @@ public class FirstLevelCreator implements ILevelCreator, IAssignmentCreator {
     @Override
     public LevelConfiguration createConfiguration() {
         return new LevelConfiguration(new ICloudLogic[]{new CloudOne(), new CloudThree(),
-                                                        new CloudOne(), new CloudThree()}, 2);
+                new CloudOne(), new CloudThree()}, 2);
     }
 
     @Override
@@ -18,6 +18,7 @@ public class FirstLevelCreator implements ILevelCreator, IAssignmentCreator {
                 .canPermute(1)
                 .canRotate(false)
                 .limitUsedPictures(2)
+                .emptyCount(LevelConfiguration.SQUARE_COUNT * 4 / 2)
                 .build();
     }
 

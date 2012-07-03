@@ -13,7 +13,7 @@ public class EmptyFieldSpreadTest {
         checkGenerating(100, 100);
         checkGenerating(1, 1);
         checkGenerating(0, 0);
-    }
+     }
 
     private void checkGenerating(int totalCount, int emptyCount) {
         EmptyFieldSpread efs = new EmptyFieldSpread(totalCount, emptyCount);

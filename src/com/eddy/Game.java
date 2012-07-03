@@ -2,11 +2,12 @@ package com.eddy;
 
 import android.os.Bundle;
 import org.cocos2d.layers.CCScene;
-import org.cocos2d.nodes.CCDirector;
-import org.cocos2d.types.ccColor4B;
 
 public class Game {
     GameLayer _game;
+    MenuLayer _menu;
+    MultiplexLayer _rootLayer;
+
     Bundle _savedState;
 
     public Game(Bundle savedInstanceState) {
@@ -15,9 +16,13 @@ public class Game {
 
     public CCScene start() {
         CCScene scene = CCScene.node();
-        _game = new GameLayer(ccColor4B.ccc4(100, 153, 252, 255), _savedState);
+        _game = new GameLayer(_savedState);
+        _menu = new MenuLayer(this, _savedState);
+        _rootLayer = new MultiplexLayer(_menu, _game);
+        //_rootLayer.showGameLayer(); //todo
+        _rootLayer.showMenuLayer();
         _savedState = null;
-        scene.addChild(_game);
+        scene.addChild(_rootLayer);
         return scene;
     }
 

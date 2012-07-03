@@ -35,8 +35,8 @@ public class GameLayer extends CCColorLayer {
     GameLayout _layout;
 
 
-    protected GameLayer(ccColor4B color, Bundle savedInstanceState) {
-        super(color);
+    protected GameLayer(Bundle savedInstanceState) {
+        super(ccColor4B.ccc4(100, 153, 252, 255));
         _currentLevel = createCurrentLevel(savedInstanceState);
         _layout = new GameLayout(CCDirector.sharedDirector().displaySize());
         refillClouds(savedInstanceState);
